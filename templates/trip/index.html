@@ -1,0 +1,9 @@
+{% if my_trip_list %}
+    <ul>
+    {% for trip in my_trip_list %}
+        <li><a href="{% url 'tripus:singleTrip' trip.id %}">{{ trip.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
