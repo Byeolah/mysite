@@ -1,9 +1,91 @@
-{% if my_trip_list %}
-    <ul>
-    {% for trip in my_trip_list %}
-        <li><a href="{% url 'tripus:singleTrip' trip.id %}">{{ trip.name }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
+{% extends 'base.html' %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% block title %}{% trans "Tripus title" %}{% endblock %}
+<body>
+
+  {% block content %}
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex justify-content-center align-items-center">
+    <div class="container position-relative" data-aos="zoom-in" data-aos-delay="100">
+        {% if user.is_authenticated %}
+          <h1>{% trans "Header main authenticated" %}</h1>
+          <h2>{% trans "Header main2" %}</h2>
+          <a href="{% url 'tripus:addTrip' %}" class="btn-get-started">{% trans "Add trip" %}</a>
+        {% else %}
+          <h1>{% trans "Header main unauthenticated" %}</h1>
+          <h2>{% trans "Header main2" %}</h2>
+          <a href="{% url 'tripus:signup' %}" class="btn-get-started">{% trans "Register" %}</a>
+        {% endif %}
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= Popular Directions Section ======= -->
+    <section id="popular-courses" class="courses">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>{% trans "Where will you go" %}</h2>
+          <p>{% trans "Popular directions" %}</p>
+        </div>
+
+        <div class="row" data-aos="zoom-in" data-aos-delay="100">
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="course-item">
+              <img src="../../static/tripus/img/course-1.jpg" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h4>Web Development</h4>
+                  <p class="price">$169</p>
+                </div>
+
+                <h3><a href="../../static/tripus/course-details.html">Website Design</a></h3>
+
+              </div>
+            </div>
+          </div> <!-- End Course Item-->
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+            <div class="course-item">
+              <img src="../../static/tripus/img/course-2.jpg" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h4>Marketing</h4>
+                  <p class="price">$250</p>
+                </div>
+
+                <h3><a href="course-details.html">Search Engine Optimization</a></h3>
+              </div>
+            </div>
+          </div> <!-- End Course Item-->
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
+            <div class="course-item">
+              <img src="../../static/tripus/img/course-3.jpg" class="img-fluid" alt="...">
+              <div class="course-content">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h4>Content</h4>
+                  <p class="price">$180</p>
+                </div>
+
+                <h3><a href="course-details.html">Copywriting</a></h3>
+              </div>
+            </div>
+          </div> <!-- End Course Item-->
+
+        </div>
+
+      </div>
+    </section><!-- End Popular Courses Section -->
+
+  </main><!-- End #main -->
+{% endblock %}
+</body>
+
+</html>

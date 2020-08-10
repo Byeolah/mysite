@@ -1,3 +1,17 @@
-<h1>{{ my_trip.name }}</h1>
-{{ my_trip.departure_date }}
-{{ my_trip.comeback_date }}
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ my_trip.name }}{% endblock %}
+{% block header %}{{ my_trip.name }}{% endblock %}
+{% block paragraph %}{{ my_trip.departure_date }} – {{ my_trip.comeback_date }}{% endblock %}
+
+{% block content %}
+    <div class="container" data-aos="fade-up">
+    <h1>{% trans "Weather" %}</h1><hr>
+    <h1>{% trans "Currency" %}</h1><hr>
+    <h1>{% trans "Tickets reservations" %}</h1><hr>
+    <h1>{% trans "Sightseeing list" %}</h1><hr>
+    <h1>{% trans "To pack list" %}</h1><hr>
+    <h1>{% trans "Costs" %}</h1><hr>
+    </div>
+{% endblock %}

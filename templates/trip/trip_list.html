@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Mytrips" %}{% endblock %}
+{% block header %}{% trans "Mytrips" %}{% endblock %}
+{% block content %}
+    {% if my_trip_list %}
+         <section id="pricing" class="pricing">
+            <div class="container" data-aos="fade-up">
+                <div class="row">
+                {% for trip in my_trip_list %}
+                    <div class="col-lg-3 col-md-6">
+                        <div class="box featured">
+                            <h3>{{ trip.country }}</h3>
+                            <ul>
+                                <li>{{ trip.city}}</li>
+                                <li>Od {{ trip.departure_date }}</li>
+                                <li>do {{ trip.comeback_date}}</li>
+                                <li>{{ trip.target}}</li>
+                            </ul>
+                            <div class="btn-wrap">
+                                <a href="{% url 'tripus:singleTrip' trip.id %}" class="btn-buy">{{ trip.name }}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+         </section>
+    {% else %}
+        <h1>{% trans "You have no trips" %}</h1>
+    {% endif %}
+{% endblock %}

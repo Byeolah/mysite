@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}{% trans "Log in" %}{% endblock %}
+{% block header %}{% trans "Log in" %}{% endblock %}
+
+{% block content %}
+    <section id="contact" class="contact">
+    <div class="container" data-aos="fade-up">
+          <form method="post" class="col-sm-3 offset-sm-4 text-center">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-success">{% trans "Log in" %}</button>
+          </form>
+    </div>
+    </section>
+{% endblock %}

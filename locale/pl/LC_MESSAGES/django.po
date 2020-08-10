@@ -1,0 +1,144 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Patrycja Kozioł <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-10 17:14+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Patrycja Kozioł <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
+"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
+"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: .\templates\base.html:53 .\templates\trip\trip_list.html:4
+#: .\templates\trip\trip_list.html:5
+msgid "Mytrips"
+msgstr "Moje podróże"
+
+#: .\templates\base.html:54 .\templates\trip\addtrip.html:14
+#: .\templates\trip\index.html:17
+msgid "Add trip"
+msgstr "Dodaj podróż"
+
+#: .\templates\base.html:55 .\templates\profile.html:4
+msgid "My account"
+msgstr "Moje konto"
+
+#: .\templates\base.html:56
+msgid "Log out"
+msgstr "Wyloguj się"
+
+#: .\templates\base.html:58 .\templates\registration\login.html:5
+#: .\templates\registration\login.html:6 .\templates\registration\login.html:14
+#, fuzzy
+#| msgid "Log in"
+msgid "Log in"
+msgstr "Zaloguj się"
+
+#: .\templates\base.html:62 .\templates\signup.html:6 .\templates\signup.html:7
+#: .\templates\signup.html:14 .\templates\trip\index.html:21
+msgid "Register"
+msgstr "Utwórz konto"
+
+#: .\templates\trip\addtrip.html:5 .\templates\trip\addtrip.html:6
+msgid "New trip"
+msgstr "Dodaj nową podróż"
+
+#: .\templates\trip\index.html:7
+msgid "Tripus title"
+msgstr "Trip with Us | Jedź z nami"
+
+#: .\templates\trip\index.html:15
+msgid "Header main authenticated"
+msgstr "Nieodkryte miejsca już na Ciebie czekają"
+
+#: .\templates\trip\index.html:16 .\templates\trip\index.html:20
+msgid "Header main2"
+msgstr "Jedź z nami"
+
+#: .\templates\trip\index.html:19
+msgid "Header main unauthenticated"
+msgstr "Dzisiejsze plany to jutrzejsza podróż"
+
+#: .\templates\trip\index.html:33
+msgid "Where will you go"
+msgstr "Dokąd pojedziesz?"
+
+#: .\templates\trip\index.html:34
+msgid "Popular directions"
+msgstr "Najpopularniejsze kierunki to:"
+
+#: .\templates\trip\singletrip.html:10
+msgid "Weather"
+msgstr "Pogoda"
+
+#: .\templates\trip\singletrip.html:11
+msgid "Currency"
+msgstr "Kurs walut"
+
+#: .\templates\trip\singletrip.html:12
+msgid "Tickets reservations"
+msgstr "Bilety i rezerwacje"
+
+#: .\templates\trip\singletrip.html:13
+msgid "Sightseeing list"
+msgstr "Miejsca, które chcę odwiedzić"
+
+#: .\templates\trip\singletrip.html:14
+msgid "To pack list"
+msgstr "Rzeczy do zabrania"
+
+#: .\templates\trip\singletrip.html:15
+msgid "Costs"
+msgstr "Wydatki podróżne"
+
+#: .\templates\trip\trip_list.html:31
+msgid "You have no trips"
+msgstr "Nie masz jeszcze żadnych podróży. Może czas coś zaplanować?"
+
+#: .\tripus\forms.py:11
+msgid "trip name"
+msgstr "Nazwa podróży"
+
+#: .\tripus\forms.py:12
+msgid "country"
+msgstr "Kraj"
+
+#: .\tripus\forms.py:13
+msgid "city"
+msgstr "Miasto"
+
+#: .\tripus\forms.py:14
+msgid "departure date"
+msgstr "Data wyjazu"
+
+#: .\tripus\forms.py:15
+msgid "comeback date"
+msgstr "Data powrotu"
+
+#: .\tripus\forms.py:16
+msgid "trip target"
+msgstr "Cel wyjazdu"
+
+#: .\tripus\forms.py:20
+msgid "first name"
+msgstr "Imię"
+
+#: .\tripus\forms.py:21
+msgid "last name"
+msgstr "Nazwisko"
+
+#: .\tripus\forms.py:22
+msgid "email address"
+msgstr "Adres email"
+
