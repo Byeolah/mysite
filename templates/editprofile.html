@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}{% trans "Edit profile" %}{% endblock %}
+{% block header %}{% trans "Edit profile" %}{% endblock %}
+
+{% block content %}
+    <section id="contact" class="contact">
+    <div class="container col-sm-4" data-aos="fade-up">
+        <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="{% trans "Save" %}" class="btn btn-success">
+    <a class="btn btn-link" href="{% url 'tripus:profile' %}" role="button">{% trans "Back to profile" %}</a>
+    </form>
+    </div>
+    </section>
+{% endblock %}

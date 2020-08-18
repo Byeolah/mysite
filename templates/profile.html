@@ -2,6 +2,57 @@
 {% load i18n %}
 
 {% block title %}{% trans "My account" %}{% endblock %}
-
-{% block header %}{% endblock %}
-{% block paragraph %}{% endblock %}
+{% block header %}{% trans "My account" %}{% endblock %}
+{% block content %}
+    <section id="contact" class="contact">
+    <div class="container col-sm-4" data-aos="fade-up">
+        <table class="table">
+            <tbody>
+            <tr>
+                <td>{% trans "first name" %}</td>
+                <td>{{ profile.first_name }}</td>
+            </tr>
+            <tr>
+                <td>{% trans "last name" %}</td>
+                <td>{{ profile.last_name }}</td>
+            </tr>
+            <tr>
+                <td>{% trans "user name" %}</td>
+                <td>{{ profile.username }}</td>
+            </tr>
+            <tr>
+                <td>{% trans "joined date" %}</td>
+                <td>{{ profile.date_joined|date:'d/m/Y' }}</td>
+            </tr>
+            <tr>
+                <td>{% trans "current trip" %}</td>
+                <td>
+                    {% if current_trip == null %}
+                        {% trans "Currently no trips" %}
+                    {% else %}
+                        {% for t in current_trip %}
+                            {{ t.country }}
+                            {% if t.city != null %}
+                                {{ '– '}}
+                                {{ t.city }}<br>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>{% trans "number of planned trips" %}</td>
+                <td>{{ future_trip }}</td>
+            </tr>
+            <tr>
+                <td>{% trans "number of past trips" %}</td>
+                <td>{{ past_trip }}</td>
+            </tr>
+            </tbody>
+        </table>
+    <div class="text-center">
+    <a class="btn btn-success" href="{% url 'tripus:editProfile' %}" role="button">{% trans "Edit profile" %}</a>
+    </div>
+    </div>
+    </section>
+{% endblock %}

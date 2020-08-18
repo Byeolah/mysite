@@ -1,17 +1,48 @@
 {% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
 {% load i18n %}
 
 {% block title %}{{ my_trip.name }}{% endblock %}
 {% block header %}{{ my_trip.name }}{% endblock %}
-{% block paragraph %}{{ my_trip.departure_date }} – {{ my_trip.comeback_date }}{% endblock %}
+{% block paragraph %}{{ my_trip.departure_date|date:'d/m/Y' }} – {{ my_trip.comeback_date|date:'d/m/Y' }}{% endblock %}
 
 {% block content %}
-    <div class="container" data-aos="fade-up">
+    <div class="container col-sm-6" data-aos="fade-up">
     <h1>{% trans "Weather" %}</h1><hr>
-    <h1>{% trans "Currency" %}</h1><hr>
+        {{ object.country }}
+    {% if country_currency != 'PLN' %}
+    <h1>{% trans "Currency rate" %}</h1><hr>
+        <div class="col-sm-4 text-center">
+        {{ topln }}<hr>
+        {{ frompln }}
+        </div>
+    {% endif %}
     <h1>{% trans "Tickets reservations" %}</h1><hr>
     <h1>{% trans "Sightseeing list" %}</h1><hr>
+        <section id="contact" class="contact">
+            <div class="container" data-aos="fade-up">
+                {% include "trip/visit_template.html" %}
+                {% if places_list|length > 5 %}
+                <div class="text-center">
+                    <a href="{% url 'tripus:visitPlaceList' my_trip.id %}">{% trans "More places to visit" %}</a>
+                </div>
+                {% endif %}
+            <a class="btn btn-success float-left" href="{% url 'tripus:visitPlaceAdd' my_trip.id %}" role="button">{% trans "Add place" %}</a>
+            </div>
+        </section>
     <h1>{% trans "To pack list" %}</h1><hr>
-    <h1>{% trans "Costs" %}</h1><hr>
+    <h1>{% trans "Spending" %}</h1><hr>
+        <section id="contact" class="contact">
+            <div class="container" data-aos="fade-up">
+                {% include "trip/spending_template.html" %}
+            </div>
+            {% if spending_record|length > 0 %}
+            <div class="text-center">
+                <a class=" btn btn-outline-success" href="{% url 'tripus:spending' my_trip.id %}">{% trans "More spending" %}</a>
+            </div>
+        {% endif %}
+        </section>
+
     </div>
 {% endblock %}

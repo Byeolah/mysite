@@ -1,0 +1,65 @@
+{% load i18n %}
+{% load crispy_forms_filters %}
+<form method="post">
+        {% csrf_token %}
+            <div class="row">
+                <div class="col-4">
+                    {{ form_spending.name|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                    {{ form_spending.price|as_crispy_field }}
+                </div>
+                <div class="col-2">
+                    {{ form_spending.currency_code|as_crispy_field }}
+                </div>
+                <div class="col-3">
+                    {{ form_spending.date|as_crispy_field }}
+                </div>
+            </div>
+            <input type="submit" value="{% trans "Add" %}" class="btn btn-success">
+        </form>
+
+
+    {% if spending_record|length > 0 %}
+        <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">{% trans "Single spending" %}</th>
+                <th scope="col">{% trans "price" %}</th>
+                <th scope="col">{% trans "Currency" %}</th>
+                <th scope="col">{% trans "date" %}</th>
+                <th scope="col">{% trans "Action" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for record in spending_record %}
+            <tr>
+                <td>{{record.name}}</td>
+                <td>{{record.price}}</td>
+                <td>{{record.currency_code}}</td>
+                <td>{{record.date|date:'d/m/Y'}}</td>
+                <td>
+                    <a class="btn btn-outline-success" href="{% url 'tripus:spendingEdit' trip_id record.id %}" role="button">{% trans "Edit" %}</a>
+                    <a class="btn btn-outline-success" href="{% url 'tripus:spendingDelete' trip_id record.id %}" role="button">{% trans "Delete" %}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        {% if spending_site %}
+            {% if country_currency != 'PLN'%}
+                <tr>
+                    <td><b>{% trans "Suma" %}</b></td>
+                    <td><b>{{ sum_exch }}</b></td>
+                    <td><b>{{ country_currency }}</b></td>
+                </tr>
+            {% endif %}
+                <tr>
+                    <td><b>{% trans "Suma" %}</b></td>
+                    <td><b>{{ sum }}</b></td>
+                    <td><b>{{ 'PLN' }}</b></td>
+                </tr>
+        {% endif %}
+        </tbody>
+        </table>
+    {% else %}
+        <div class="text-center">{% trans "No spending" %}</div>
+    {% endif %}

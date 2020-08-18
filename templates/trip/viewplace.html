@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}{% trans "Places to visit" %}{% endblock %}
+{% block header %}{{place.name}}{% endblock %}
+
+{% block content %}
+    <section id="contact" class="contact">
+    <div class="container  col-sm-4" data-aos="fade-up">
+        <table class="table">
+            <tbody>
+            <tr>
+                <td>{% trans "name" %}</td>
+                <td>{{ place.name }}</td>
+            </tr>
+            <tr>
+                <td>{% trans "visit_date" %}</td>
+                <td>{{ place.visit_date|date:'d/m/Y' }}</td>
+            </tr>
+            <tr>
+                <td>{% trans "website" %}</td>
+                <td>{{ place.website}}</td>
+            </tr>
+            <tr>
+                <td>{% trans "addess" %}</td>
+                <td>{{ place.address }}</td>
+            </tr>
+            <tr>
+                <td>{% trans "approach" %}</td>
+                <td>{{ place.approach }}</td>
+            </tr>
+            <tr>
+                <td>{% trans "notes" %}</td>
+                <td>{{ place.notes }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a class="btn btn-success" href="{% url 'tripus:visitPlaceEdit' trip_id place.id %}" role="button">{% trans "Edit place" %}</a>
+        <a class="btn btn-outline-success" href="{% url 'tripus:visitPlaceDelete' trip_id place.id %}" role="button">{% trans "Delete place" %}</a>
+        <a class="btn btn-link" href="{% url 'tripus:singleTrip' trip_id %}" role="button">{% trans "Back to trip" %}</a>
+    </div>
+    </section>
+{% endblock %}
