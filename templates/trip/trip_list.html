@@ -4,18 +4,57 @@
 {% block title %}{% trans "Mytrips" %}{% endblock %}
 {% block header %}{% trans "Mytrips" %}{% endblock %}
 {% block content %}
-    {% if my_trip_list %}
+    {% if current_trip or past_trip or future_trip %}
          <section id="pricing" class="pricing">
             <div class="container" data-aos="fade-up">
+                <hr><h1>{% trans "Current trips" %}</h1><hr>
                 <div class="row">
-                {% for trip in my_trip_list %}
+                {% for trip in current_trip %}
                     <div class="col-lg-3 col-md-6">
                         <div class="box featured">
                             <h3>{{ trip.country }}</h3>
                             <ul>
                                 <li>{{ trip.city}}</li>
-                                <li>Od {{ trip.departure_date }}</li>
-                                <li>do {{ trip.comeback_date}}</li>
+                                <li>Od {{ trip.departure_date|date:'d/m/Y' }}</li>
+                                <li>do {{ trip.comeback_date|date:'d/m/Y' }}</li>
+                                <li>{{ trip.target}}</li>
+                            </ul>
+                            <div class="btn-wrap">
+                                <a href="{% url 'tripus:singleTrip' trip.id %}" class="btn-buy">{{ trip.name }}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                <hr><h1>{% trans "Future trips" %}</h1><hr>
+                <div class="row">
+                {% for trip in future_trip %}
+                    <div class="col-lg-3 col-md-6">
+                        <div class="box featured">
+                            <h3>{{ trip.country }}</h3>
+                            <ul>
+                                <li>{{ trip.city}}</li>
+                                <li>Od {{ trip.departure_date|date:'d/m/Y' }}</li>
+                                <li>do {{ trip.comeback_date|date:'d/m/Y' }}</li>
+                                <li>{{ trip.target}}</li>
+                            </ul>
+                            <div class="btn-wrap">
+                                <a href="{% url 'tripus:singleTrip' trip.id %}" class="btn-buy">{{ trip.name }}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                <hr><h1>{% trans "Past trips" %}</h1><hr>
+                <div class="row">
+                {% for trip in past_trip %}
+                    <div class="col-lg-3 col-md-6">
+                        <div class="box featured">
+                            <h3>{{ trip.country }}</h3>
+                            <ul>
+                                <li>{{ trip.city}}</li>
+                                <li>Od {{ trip.departure_date|date:'d/m/Y' }}</li>
+                                <li>do {{ trip.comeback_date|date:'d/m/Y' }}</li>
                                 <li>{{ trip.target}}</li>
                             </ul>
                             <div class="btn-wrap">

@@ -3,9 +3,9 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-{% block title %}{% trans "Edit spending" %}{% endblock %}
-{% block header %}{{ spending.name }}{% endblock %}
-{% block paragraph %}{% trans "Edit spending" %}{% endblock %}
+{% block title %}{% trans "Edit place" %}{% endblock %}
+{% block header %}{{ place.name }}{% endblock %}
+{% block paragraph %}{% trans "Edit place" %}{% endblock %}
 
 {% block content %}
     <section id="contact" class="contact">
@@ -14,7 +14,7 @@
                 {% csrf_token %}
                 {{ form|crispy }}
                 <input type="submit" value="{% trans "Save" %}" class="btn btn-success">
-                <a class="btn btn-link" href="{% url 'tripus:spending' trip_id %}" role="button">{% trans "Back to spending" %}</a>
+                <a class="btn btn-link" href="{% url 'tripus:visitPlaceView' trip_id place.id %}" role="button">{% trans "Back to place" %}</a>
             </form>
         </div>
     </section>

@@ -3,16 +3,16 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-{% block title %}{% trans "New trip" %}{% endblock %}
-{% block header %}{% trans "New trip" %}{% endblock %}
+{% block title %}{% trans "Add place to visit" %}{% endblock %}
+{% block header %}{% trans "Add place to visit" %}{% endblock %}
 
 {% block content %}
     <section id="contact" class="contact">
         <div class="container col-sm-4" data-aos="fade-up">
-            <form action="{% url 'tripus:addTrip' %}" method="post">
+            <form action="{% url 'tripus:visitPlaceAdd' trip_id %}" method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <input type="submit" value="{% trans "Add trip" %}" class="btn btn-success">
+                <input type="submit" value="{% trans "Add" %}" class="btn btn-success">
             </form>
         </div>
     </section>

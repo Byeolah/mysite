@@ -1,29 +1,26 @@
 from decimal import Decimal
-
-from django.db.models import Sum
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template import loader
-from django.utils.translation import get_language
 from django.utils.translation import ugettext_lazy as _
-from django.forms import ModelForm
-from .models import *
 from .forms import *
-from django.views import generic
 from django.urls import reverse
 from pprint import pprint
 from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django_countries import countries
 from country_currencies import get_by_country
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-import exchange
 import currency_exchange
+from django.db.models import F
+import weather_forecast as wf
+from pyowm.owm import OWM
 
 
 # Main site.
 def index(request):
-    return render(request, 'trip/index.html')
+    return render(request, 'index.html')
+
+
+# <----------User section---------->
 
 
 # User profile view.
@@ -40,261 +37,22 @@ def view_profile(request):
         else:
             current_trip.append(trip)
 
-    return render(request, 'profile.html', {'profile':profile, 'future_trip':future_trip, 'past_trip':past_trip,
-                                            'current_trip':current_trip})
+    return render(request, 'profile.html', {'profile': profile, 'future_trip': future_trip, 'past_trip': past_trip,
+                                            'current_trip': current_trip})
 
 
-# Change password.
-@login_required(login_url='/tripus/login')
-def change_password(request):
+# Edit user's profile.
+def edit_profile(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(data=request.POST, user=request.user)
-
+        form = EditProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            update_session_auth_hash(request, form.user)
-            messages.success(request, _('Your password was updated successfully!'))
+            messages.success(request, _('Your profile was updated successfully!'))
             return redirect(reverse('tripus:profile'))
-        else:
-            return redirect(reverse('tripus:changePassword'))
     else:
-        form = PasswordChangeForm(user=request.user)
+        form = EditProfileForm(instance=request.user)
 
-        args = {'form': form}
-        return render(request, 'change_password.html', args)
-
-
-# View single trip.
-def singletrip(request, trip_id):
-    trip = Trip.objects.get(id=trip_id)
-    for name, key in countries:
-        if key == trip.country:
-            country_code = name
-    country_currency = get_by_country(country_code)[0]
-
-    if request.method == 'POST':
-        form = SpendingForm(request.POST)
-        if country_currency == 'PLN':
-            form.fields['currency_code'].choices = [(country_currency, country_currency)]
-        else:
-            form.fields['currency_code'].choices = [(country_currency, country_currency), ('PLN', 'PLN')]
-        form.fields['currency_code'].initial = country_currency
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            price = form.cleaned_data['price']
-            currency_code = form.cleaned_data['currency_code']
-            date = form.cleaned_data['date']
-            s = Spending(name=name, price=price, currency_code=currency_code, date=date, trip_id=trip_id)
-            s.save()
-            return redirect('tripus:singleTrip', trip_id)
-    else:
-        form = SpendingForm(initial={'currency_code':country_currency})
-        if country_currency == 'PLN':
-            form.fields['currency_code'].choices = [(country_currency, country_currency)]
-        else:
-            form.fields['currency_code'].choices = [(country_currency, country_currency), ('PLN', 'PLN')]
-        #form.fields['currency_code'].initial = country_currency
-
-    spending_record = Spending.objects.filter(trip_id=trip_id).order_by('-id')[:5]
-    places_list = Visit.objects.filter(trip_id=trip_id).order_by('-id')[:5]
-
-    topln = round(Decimal(currency_exchange.exchange(country_currency, 'PLN', 1)[0][:-4]), 2)
-    frompln = round(Decimal(currency_exchange.exchange('PLN', country_currency, 1)[0][:-4]), 2)
-
-    return render(request, 'trip/singletrip.html', {'my_trip': trip, 'spending_record': spending_record, 'places_list':places_list,
-                                                    'form_spending': form,'trip_id': trip.id, 'topln': topln, 'frompln': frompln,
-                                                    'country_currency': country_currency})
-
-
-# Spending page.
-def spending(request, trip_id):
-    trip = Trip.objects.get(id=trip_id)
-    for name, key in countries:
-        if key == trip.country:
-            country_code = name
-    country_currency = get_by_country(country_code)[0]
-
-    if request.method == 'POST':
-        form = SpendingForm(request.POST)
-        if country_currency == 'PLN':
-            form.fields['currency_code'].choices = [(country_currency, country_currency)]
-        else:
-            form.fields['currency_code'].choices = [(country_currency, country_currency), ('PLN', 'PLN')]
-        form.fields['currency_code'].initial = country_currency
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            price = form.cleaned_data['price']
-            currency_code = form.cleaned_data['currency_code']
-            date = form.cleaned_data['date']
-            s = Spending(name=name, price=price, currency_code=currency_code, date=date, trip_id=trip_id)
-            s.save()
-            return redirect('tripus:spending', trip_id)
-    else:
-        form = SpendingForm()
-        if country_currency == 'PLN':
-            form.fields['currency_code'].choices = [(country_currency, country_currency)]
-        else:
-            form.fields['currency_code'].choices = [(country_currency, country_currency), ('PLN', 'PLN')]
-        form.fields['currency_code'].initial = country_currency
-
-    spending_record = Spending.objects.filter(trip_id=trip_id).order_by('-id')
-    sum = 0
-    for i in spending_record:
-        if i.currency_code == 'PLN':
-            sum = sum + i.price
-        else:
-            val = currency_exchange.exchange(i.currency_code, 'PLN', i.price)
-            val = round(Decimal(val[0][:-4]), 2)
-            sum = sum + val
-
-    sum_exch = currency_exchange.exchange('PLN', country_currency, sum)
-    sum_exch = round(Decimal(sum_exch[0][:-4]), 2)
-    return render(request, 'trip/spending.html', {'spending_record': spending_record, 'form_spending': form, 'trip_id': trip_id,
-                                                  'trip':trip, 'sum':sum, 'sum_exch': sum_exch, 'country_currency': country_currency,
-                                                  'spending_site': 1})
-
-
-# Edit spending.
-def spendingedit(request, trip_id, spending_id):
-    instance = Spending.objects.get(id=spending_id)
-    trip = Trip.objects.get(id=trip_id)
-    for name, key in countries:
-        if key == trip.country:
-            country_code = name
-    country_currency = get_by_country(country_code)[0]
-    if request.method == 'POST':
-        form = SpendingForm(request.POST, instance=instance)
-        if country_currency == 'PLN':
-            form.fields['currency_code'].choices = [(country_currency, country_currency)]
-        else:
-            form.fields['currency_code'].choices = [(country_currency, country_currency), ('PLN', 'PLN')]
-        form.fields['currency_code'].initial = country_currency
-        if form.is_valid():
-            form.save()
-            messages.success(request, _('Spending was updated successfully!'))
-            return redirect('tripus:spending', trip_id=trip_id)
-    else:
-        form = SpendingForm(instance=instance)
-        if country_currency == 'PLN':
-            form.fields['currency_code'].choices = [(country_currency, country_currency)]
-        else:
-            form.fields['currency_code'].choices = [(country_currency, country_currency), ('PLN', 'PLN')]
-        form.fields['currency_code'].initial = country_currency
-
-    return render(request, 'spending/editspending.html', {'form': form, 'spending':instance, 'trip_id':trip_id})
-
-
-# Delete spending.
-def spendingdelete(request, trip_id, spending_id):
-    instance = get_object_or_404(Spending, id=spending_id)
-    if request.method == "POST":
-        form = SpendingDeleteForm(request.POST, instance=instance)
-        if form.is_valid():
-            instance.delete()
-            messages.success(request, _('Spending was deleted successfully!'))
-            return redirect('tripus:spending', trip_id=trip_id)
-    else:
-        form = SpendingDeleteForm(instance=instance)
-
-    return render(request, 'spending/deletespending.html', {'form': form, 'spending': instance, 'trip_id':trip_id })
-
-
-class MytripsView(generic.ListView):
-    context_object_name = 'my_trip_list'
-    template_name = 'trip/trip_list.html'
-
-    def get_queryset(self):
-        my_trip_list = Trip.objects.filter(user_id=self.request.user.id).order_by('departure_date')
-        for i in my_trip_list:
-            i.url = i.name.replace(' ', '-').lower()
-        return my_trip_list
-
-
-# Add trip.
-def addtrip(request):
-    if request.method == 'POST':
-        form = AddTripForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            country = form.cleaned_data['country']
-            city = form.cleaned_data['city']
-            departure_date = form.cleaned_data['departure_date']
-            comeback_date = form.cleaned_data['comeback_date']
-            target = form.cleaned_data['target']
-            user_id = request.user.id
-            t = Trip(name=name, country=country, city=city, departure_date=departure_date, comeback_date=comeback_date, target=target, user_id=user_id)
-            t.save()
-            return redirect('tripus:singleTrip', pk=t.pk)
-    else:
-        form = AddTripForm()
-    return render(request, 'trip/addtrip.html', {'form': form})
-
-
-# Edit trip.
-def edittrip(request, trip_id):
-    mytrip = get_object_or_404(Trip, id=trip_id)
-    if request.method == 'POST':
-        form = AddTripForm(request.POST)
-    else:
-        form = AddTripForm()
-    return render(request, 'trip/addtrip.html', {'form': form})
-
-
-# Display places to visit
-def visitplace(request, trip_id):
-    places_list = Visit.objects.filter(trip_id=trip_id)
-    return render(request, 'trip/visitlist.html', {'trip_id':trip_id, 'places_list':places_list})
-
-
-# Add place to visit
-def visitplaceadd(request, trip_id):
-    if request.method == 'POST':
-        form = VisitForm(request.POST, initial={'visited': False})
-        if form.is_valid():
-            form.process()
-            bbb = form.save(commit=False)
-            bbb.trip_id = trip_id
-            bbb.save()
-            messages.success(request, _('You added a new place to visit!'))
-            return redirect('tripus:visitPlaceList', trip_id=trip_id)
-    else:
-        form = VisitForm()
-    return render(request, 'trip/addplace.html', {'form': form, 'trip_id':trip_id})
-
-
-# Edit place to visit.
-def visitplaceedit(request, trip_id, visit_id):
-    instance = Visit.objects.get(id=visit_id)
-    if request.method == 'POST':
-        form = VisitForm(request.POST, instance=instance)
-        if form.is_valid():
-            form.save()
-            messages.success(request, _('Place was updated successfully!'))
-            return redirect('tripus:visitPlaceView', trip_id=trip_id, visit_id=visit_id)
-    else:
-        form = VisitForm(instance=instance)
-
-    return render(request, 'trip/editplace.html', {'form': form, 'place':instance, 'trip_id':trip_id})
-
-
-# Delete place.
-def visitplacedelete(request, trip_id, visit_id):
-    instance = get_object_or_404(Visit, id=visit_id)
-    if request.method == "POST":
-        form = VisitDeleteForm(request.POST, instance=instance)
-        if form.is_valid():
-            instance.delete()
-            return redirect('tripus:visitPlaceList', trip_id=trip_id)
-    else:
-        form = VisitDeleteForm(instance=instance)
-
-    return render(request, 'trip/deleteplace.html', {'form': form, 'place': instance, 'trip_id':trip_id })
-
-
-# View single place to visit.
-def visitplaceview(request, trip_id, visit_id):
-    place = Visit.objects.get(id=visit_id)
-    return render(request, 'trip/viewplace.html', {'place':place, 'trip_id':trip_id})
+    return render(request, 'editprofile.html', {'form': form})
 
 
 # Login.
@@ -322,15 +80,328 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 
-# Edit user's profile.
-def edit_profile(request):
+# Change password.
+@login_required(login_url='/tripus/login')
+def change_password(request):
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, instance=request.user)
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+
         if form.is_valid():
             form.save()
-            messages.success(request, _('Your profile was updated successfully!'))
+            update_session_auth_hash(request, form.user)
+            messages.success(request, _('Your password was updated successfully!'))
             return redirect(reverse('tripus:profile'))
+        else:
+            return redirect(reverse('tripus:changePassword'))
     else:
-        form = EditProfileForm(instance=request.user)
+        form = PasswordChangeForm(user=request.user)
 
-    return render(request, 'editprofile.html', {'form': form})
+        return render(request, 'change_password.html', {'form': form})
+
+
+# <----------Trip section---------->
+
+
+# View all trips.
+def mytrips(request):
+    trips = Trip.objects.filter(user_id=request.user.id).order_by('departure_date')
+    current_trip, future_trip, past_trip = [], [], []
+    for trip in trips:
+        if trip.comeback_date < datetime.date.today():
+            past_trip.append(trip)
+        elif trip.departure_date > datetime.date.today():
+            future_trip.append(trip)
+        else:
+            current_trip.append(trip)
+
+    return render(request, 'trip/trip_list.html', {'past_trip': past_trip, 'future_trip': future_trip,
+                                                   'current_trip': current_trip})
+
+
+# View single trip.
+def singletrip(request, trip_id):
+    trip = Trip.objects.get(id=trip_id)
+    country_currency = get_by_country(trip.country.code)[0]
+    spending_record = Spending.objects.filter(trip_id=trip_id).order_by('-id')[:5]
+    places_list = Visit.objects.filter(trip_id=trip_id).order_by(F('visit_date').asc(nulls_last=True))[:5]
+    topln = round(Decimal(currency_exchange.exchange(country_currency, 'PLN', 1)[0][:-4]), 2)
+    frompln = round(Decimal(currency_exchange.exchange('PLN', country_currency, 1)[0][:-4]), 2)
+    note_exists = Note.objects.filter(trip_id=trip_id).count()
+
+    # nie wyświetla obecnej pogody tylko przyszłą
+    #weather = wf.forecast(place=trip.city, date='2020-08-21')
+
+    # owm
+    owm = OWM('61628e9b974ab0c76ffb1ce46c10b2d1')
+    mgr = owm.weather_manager()
+    #daily_forecast = mgr.forecast_at_place('Kraków,PL', 'daily').forecast
+    #observation = mgr.weather_at_place('London, GB').weather
+   # w = observation.weather
+    #pprint(observation.temperature())
+    #pprint(daily_forecast)
+
+    if request.method == 'POST':
+        form = SpendingForm(request.POST)
+        if country_currency == 'PLN':
+            form.fields['currency_code'].choices = [(country_currency, country_currency)]
+        else:
+            form.fields['currency_code'].choices = [(country_currency, country_currency), ('PLN', 'PLN')]
+        form.fields['currency_code'].initial = country_currency
+        if form.is_valid():
+            form.process()
+            bbb = form.save(commit=False)
+            bbb.trip_id = trip_id
+            bbb.save()
+            messages.success(request, _('You added a new spending!'))
+            return redirect('tripus:singleTrip', trip_id)
+    else:
+        form = SpendingForm(initial={'currency_code':country_currency})
+        if country_currency == 'PLN':
+            form.fields['currency_code'].choices = [(country_currency, country_currency)]
+        else:
+            form.fields['currency_code'].choices = [(country_currency, country_currency), ('PLN', 'PLN')]
+
+    if note_exists == 0:
+        if request.method == 'POST':
+            form_note = NoteForm(request.POST)
+            if form_note.is_valid():
+                form_note.process()
+                bbb = form_note.save(commit=False)
+                bbb.trip_id = trip_id
+                bbb.save()
+                messages.success(request, _('You added a note!'))
+            return redirect('tripus:singleTrip', trip_id)
+        else:
+            form_note = NoteForm()
+    else:
+        form_note = Note.objects.get(trip_id=trip_id)
+
+    return render(request, 'trip/singletrip.html', {'my_trip': trip, 'spending_record': spending_record, 'places_list':places_list,
+                                                    'form_spending': form,'trip_id': trip.id, 'topln': topln, 'frompln': frompln,
+                                                    'country_currency': country_currency, 'form_notes': form_note,
+                                                    'note_exists': note_exists})
+
+
+# Add trip.
+def addtrip(request):
+    if request.method == 'POST':
+        form = AddTripForm(request.POST)
+        if form.is_valid():
+            form.process()
+            bbb = form.save(commit=False)
+            bbb.user_id = request.user.id
+            bbb.save()
+            messages.success(request, _('You added a new trip!'))
+            return redirect('tripus:singleTrip', trip_id=bbb.id)
+    else:
+        form = AddTripForm()
+    return render(request, 'trip/addtrip.html', {'form': form})
+
+
+# Edit trip.
+def edittrip(request, trip_id):
+    instance = get_object_or_404(Trip, id=trip_id)
+    if request.method == 'POST':
+        form = AddTripForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _('Trip was updated successfully!'))
+            return redirect('tripus:singleTrip', trip_id=trip_id)
+    else:
+        form = AddTripForm(instance=instance)
+    return render(request, 'trip/edittrip.html', {'form': form})
+
+
+# Delete trip.
+def deletetrip(request, trip_id):
+    instance = get_object_or_404(Trip, id=trip_id)
+    if request.method == "POST":
+        form = TripDeleteForm(request.POST, instance=instance)
+        if form.is_valid():
+            instance.delete()
+            messages.success(request, _('Trip was deleted successfully!'))
+            return redirect('tripus:mytrips')
+    else:
+        form = VisitDeleteForm(instance=instance)
+
+    return render(request, 'trip/deletetrip.html', {'form': form, 'trip': instance, 'trip_id': trip_id })
+
+# <----------Spending section---------->
+
+
+# Spending page.
+def spending(request, trip_id):
+    trip = Trip.objects.get(id=trip_id)
+    country_currency = get_by_country(trip.country.code)[0]
+    spending_record = Spending.objects.filter(trip_id=trip_id).order_by('-id')
+    total = 0
+
+    if request.method == 'POST':
+        form = SpendingForm(request.POST)
+        if country_currency == 'PLN':
+            form.fields['currency_code'].choices = [(country_currency, country_currency)]
+        else:
+            form.fields['currency_code'].choices = [(country_currency, country_currency), ('PLN', 'PLN')]
+        form.fields['currency_code'].initial = country_currency
+        if form.is_valid():
+            form.process()
+            bbb = form.save(commit=False)
+            bbb.trip_id = trip_id
+            bbb.save()
+            messages.success(request, _('You added a new spending!'))
+            return redirect('tripus:spending', trip_id)
+    else:
+        form = SpendingForm()
+        if country_currency == 'PLN':
+            form.fields['currency_code'].choices = [(country_currency, country_currency)]
+        else:
+            form.fields['currency_code'].choices = [(country_currency, country_currency), ('PLN', 'PLN')]
+        form.fields['currency_code'].initial = country_currency
+
+    for i in spending_record:
+        if i.currency_code == 'PLN':
+            total = total + i.price
+        else:
+            val = round(Decimal(currency_exchange.exchange(i.currency_code, 'PLN', i.price)[0][:-4]), 2)
+            total = total + val
+
+    sum_exch = round(Decimal(currency_exchange.exchange('PLN', country_currency, total)[0][:-4]), 2)
+    return render(request, 'spending/viewspending.html', {'spending_record': spending_record, 'form_spending': form, 'trip_id': trip_id,
+                                                  'trip': trip, 'sum': total, 'sum_exch': sum_exch, 'country_currency': country_currency,
+                                                  'spending_site': 1})
+
+
+# Edit spending.
+def spendingedit(request, trip_id, spending_id):
+    instance = get_object_or_404(Spending, id=spending_id)
+    trip = Trip.objects.get(id=trip_id)
+    country_currency = get_by_country(trip.country.code)[0]
+
+    if request.method == 'POST':
+        form = SpendingForm(request.POST, instance=instance)
+        if country_currency == 'PLN':
+            form.fields['currency_code'].choices = [(country_currency, country_currency)]
+        else:
+            form.fields['currency_code'].choices = [(country_currency, country_currency), ('PLN', 'PLN')]
+        form.fields['currency_code'].initial = country_currency
+        if form.is_valid():
+            form.save()
+            messages.success(request, _('Spending was updated successfully!'))
+            return redirect('tripus:spending', trip_id=trip_id)
+    else:
+        form = SpendingForm(instance=instance)
+        if country_currency == 'PLN':
+            form.fields['currency_code'].choices = [(country_currency, country_currency)]
+        else:
+            form.fields['currency_code'].choices = [(country_currency, country_currency), ('PLN', 'PLN')]
+        form.fields['currency_code'].initial = country_currency
+
+    return render(request, 'spending/editspending.html', {'form': form, 'spending': instance, 'trip_id': trip_id})
+
+
+# Delete spending.
+def spendingdelete(request, trip_id, spending_id):
+    instance = get_object_or_404(Spending, id=spending_id)
+    if request.method == "POST":
+        form = SpendingDeleteForm(request.POST, instance=instance)
+        if form.is_valid():
+            instance.delete()
+            messages.success(request, _('Spending was deleted successfully!'))
+            return redirect('tripus:spending', trip_id=trip_id)
+    else:
+        form = SpendingDeleteForm(instance=instance)
+
+    return render(request, 'spending/deletespending.html', {'form': form, 'spending': instance, 'trip_id': trip_id})
+
+
+# <----------Place section---------->
+
+
+# Display places to visit
+def visitplace(request, trip_id):
+    places_list = Visit.objects.filter(trip_id=trip_id).order_by(F('visit_date').asc(nulls_last=True))
+    return render(request, 'place/visitlist.html', {'trip_id': trip_id, 'places_list': places_list})
+
+
+# Add place to visit
+def visitplaceadd(request, trip_id):
+    if request.method == 'POST':
+        form = VisitForm(request.POST, initial={'visited': False})
+        if form.is_valid():
+            form.process()
+            bbb = form.save(commit=False)
+            bbb.trip_id = trip_id
+            bbb.save()
+            messages.success(request, _('You added a new place to visit!'))
+            return redirect('tripus:visitPlaceList', trip_id=trip_id)
+    else:
+        form = VisitForm()
+    return render(request, 'place/addplace.html', {'form': form, 'trip_id': trip_id})
+
+
+# Edit place to visit.
+def visitplaceedit(request, trip_id, visit_id):
+    instance = get_object_or_404(Visit, id=visit_id)
+    if request.method == 'POST':
+        form = VisitForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _('Place was updated successfully!'))
+            return redirect('tripus:visitPlaceView', trip_id=trip_id, visit_id=visit_id)
+    else:
+        form = VisitForm(instance=instance)
+
+    return render(request, 'place/editplace.html', {'form': form, 'place': instance, 'trip_id': trip_id})
+
+
+# Delete place.
+def visitplacedelete(request, trip_id, visit_id):
+    instance = get_object_or_404(Visit, id=visit_id)
+    if request.method == "POST":
+        form = VisitDeleteForm(request.POST, instance=instance)
+        if form.is_valid():
+            instance.delete()
+            messages.success(request, _('Place was deleted successfully!'))
+            return redirect('tripus:visitPlaceList', trip_id=trip_id)
+    else:
+        form = VisitDeleteForm(instance=instance)
+
+    return render(request, 'place/deleteplace.html', {'form': form, 'place': instance, 'trip_id': trip_id})
+
+
+# View single place to visit.
+def visitplaceview(request, trip_id, visit_id):
+    place = Visit.objects.get(id=visit_id)
+    return render(request, 'place/viewplace.html', {'place': place, 'trip_id': trip_id})
+
+# <----------Note section---------->
+
+
+# Edit note.
+def noteedit(request, trip_id, note_id):
+    instance = get_object_or_404(Note, id=note_id)
+    if request.method == 'POST':
+        form = NoteForm(request.POST, instance=instance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _('Note was updated successfully!'))
+            return redirect('tripus:singleTrip', trip_id=trip_id)
+    else:
+        form = NoteForm(instance=instance)
+
+    return render(request, 'note/editnote.html', {'form': form, 'note': instance, 'trip_id': trip_id})
+
+
+# Delete note.
+def notedelete(request, trip_id, note_id):
+    instance = get_object_or_404(Note, id=note_id)
+    if request.method == "POST":
+        form = NoteDeleteForm(request.POST, instance=instance)
+        if form.is_valid():
+            instance.delete()
+            messages.success(request, _('Note was deleted successfully!'))
+            return redirect('tripus:singleTrip', trip_id=trip_id)
+    else:
+        form = NoteDeleteForm(instance=instance)
+
+    return render(request, 'note/deletenote.html', {'form': form, 'note': instance, 'trip_id': trip_id})

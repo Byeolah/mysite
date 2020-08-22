@@ -9,9 +9,9 @@
 
 {% block content %}
     <section id="contact" class="contact">
-    <div class="container" data-aos="fade-up">
-        {% include "trip/spending_template.html" %}
-        <a class="btn btn-link" href="{% url 'tripus:singleTrip' trip.id %}" role="button">{% trans "Back to trip" %}</a>
-    </div>
+        <div class="container" data-aos="fade-up">
+            {% include "spending/spending_template.html" %}
+            <a class="btn btn-link" href="{% url 'tripus:singleTrip' trip.id %}" role="button">{% trans "Back to trip" %}</a>
+        </div>
     </section>
 {% endblock %}

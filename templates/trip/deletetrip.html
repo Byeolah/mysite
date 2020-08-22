@@ -3,19 +3,19 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-{% block title %}{% trans "Delete spending" %}{% endblock %}
-{% block header %}{{ spending.name }}{% endblock %}
-{% block paragraph %}{% trans "Delete spending" %}{% endblock %}
+{% block title %}{% trans "Delete trip" %}{% endblock %}
+{% block header %}{{ trip.name }}{% endblock %}
+{% block paragraph %}{% trans "Delete trip" %}{% endblock %}
 
 {% block content %}
     <section id="contact" class="contact">
         <div class="container col-sm-4" data-aos="fade-up">
-            <form action="{% url 'tripus:spendingDelete' trip_id spending.id %}" method="post">
+            <form action="{% url 'tripus:deleteTrip' trip_id %}" method="post">
                 {% csrf_token %}
                 {{ form }}
-                {% trans "Confirm deleting this spending:" %}
+                {% trans "Confirm deleting this trip:" %}
                 <br><br>
-                {{ spending.name }}<br><br>
+                {{ trip.name }}<br><br>
                 <button class="btn btn-success" type="submit">{% trans "Delete" %}</button>
             </form>
         </div>
