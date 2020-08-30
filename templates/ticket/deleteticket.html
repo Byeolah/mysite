@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}{% trans "Delete ticket" %}{% endblock %}
+{% block header %}{{ ticket.name }}{% endblock %}
+{% block paragraph %}{% trans "Delete ticket" %}{% endblock %}
+
+{% block content %}
+    <section id="contact" class="contact">
+        <div class="container col-sm-4" data-aos="fade-up">
+            <form action="{% url 'tripus:ticketDelete' trip_id ticket.id %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                {% trans "Confirm deleting this ticket:" %}
+                <br><br>
+                {{ ticket.name }}<br><br>
+                <button class="btn btn-success" type="submit">{% trans "Delete" %}</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}

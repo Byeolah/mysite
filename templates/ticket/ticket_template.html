@@ -1,0 +1,30 @@
+{% load static %}
+{% load i18n %}
+
+{% if ticket|length > 0 %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">{% trans "Name" %}</th>
+                <th scope="col">{% trans "Date" %}</th>
+                <th scope="col">{% trans "File" %}</th>
+                <th scope="col">{% trans "Action" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for record in ticket %}
+            <tr>
+                <td>{{record.name}}</td>
+                <td>{{record.date|date:'d/m/Y'}}</td>
+                <td><a class="btn btn-link" href="{{ record.file.url }}">{% trans "View" %}</a></td>
+                <td>
+                    <a class="btn btn-outline-success" href="{% url 'tripus:ticketEdit' trip_id record.id %}" role="button">{% trans "Edit" %}</a>
+                    <a class="btn btn-outline-success" href="{% url 'tripus:ticketDelete' trip_id record.id %}" role="button">{% trans "Delete" %}</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="text-center">{% trans "No tickets" %}</div>
+{% endif %}

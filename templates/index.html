@@ -34,51 +34,39 @@
           <p>{% trans "Popular directions" %}</p>
         </div>
 
-        <div class="row" data-aos="zoom-in" data-aos-delay="100">
-
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-            <div class="course-item">
-              <img src="../static/tripus/img/course-1.jpg" class="img-fluid" alt="...">
-              <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h4>Web Development</h4>
-                  <p class="price">$169</p>
+        {% if country_list|length > 0 %}
+            <div class="row" data-aos="zoom-in" data-aos-delay="100">
+              <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+                <div class="course-item">
+                  <img src="../static/tripus/img/direction-2-2.jpg" class="img-fluid" alt="...">
+                  <div class="course-content">
+                    <h3>{{ country_list.0 }}</h3>
+                  </div>
                 </div>
+              </div> <!-- End Course Item-->
+        {% endif %}
 
-                <h3><a href="../../static/tripus/course-details.html">Website Design</a></h3>
-
-              </div>
-            </div>
-          </div> <!-- End Course Item-->
-
+        {% if country_list|length > 1 %}
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
             <div class="course-item">
-              <img src="../static/tripus/img/course-2.jpg" class="img-fluid" alt="...">
+              <img src="../static/tripus/img/direction-3-2.jpg" class="img-fluid" alt="...">
               <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h4>Marketing</h4>
-                  <p class="price">$250</p>
-                </div>
-
-                <h3><a href="course-details.html">Search Engine Optimization</a></h3>
+                <h3>{{ country_list.1 }}</h3>
               </div>
             </div>
           </div> <!-- End Course Item-->
+        {% endif %}
 
+        {% if country_list|length > 2 %}
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
             <div class="course-item">
-              <img src="../static/tripus/img/course-3.jpg" class="img-fluid" alt="...">
+              <img src="../static/tripus/img/direction-1-2.jpg" class="img-fluid" alt="...">
               <div class="course-content">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h4>Content</h4>
-                  <p class="price">$180</p>
-                </div>
-
-                <h3><a href="course-details.html">Copywriting</a></h3>
+                <h3>{{ country_list.2 }}</h3>
               </div>
             </div>
           </div> <!-- End Course Item-->
-
+        {% endif %}
         </div>
 
       </div>

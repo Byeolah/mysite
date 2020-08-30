@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-22 17:51+0200\n"
+"POT-Creation-Date: 2020-08-30 16:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Patrycja Kozioł <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgid "Mytrips"
 msgstr "Moje podróże"
 
 #: .\templates\base.html:54 .\templates\index.html:17
-#: .\templates\trip\addtrip.html:15
+#: .\templates\trip\addtrip.html:15 .\templates\trip\trip_list.html:73
 msgid "Add trip"
 msgstr "Dodaj podróż"
 
@@ -51,6 +51,20 @@ msgstr "Zaloguj się"
 msgid "Register"
 msgstr "Utwórz konto"
 
+#: .\templates\base.html:110
+msgid "Useful links"
+msgstr "Przydatne linki"
+
+#: .\templates\base.html:112 .\templates\error\400.html:11
+#: .\templates\error\403.html:11 .\templates\error\404.html:11
+#: .\templates\error\500.html:11
+msgid "Home"
+msgstr "Strona główna"
+
+#: .\templates\base.html:113 .\templates\info.html:6 .\templates\info.html:7
+msgid "About"
+msgstr "O serwisie"
+
 #: .\templates\change_password.html:6 .\templates\change_password.html:7
 msgid "Change password"
 msgstr "Zmień hasło"
@@ -58,6 +72,7 @@ msgstr "Zmień hasło"
 #: .\templates\change_password.html:15 .\templates\editprofile.html:15
 #: .\templates\note\editnote.html:15 .\templates\place\editplace.html:16
 #: .\templates\spending\editspending.html:16
+#: .\templates\ticket\editticket.html:15 .\templates\trip\edittrip.html:15
 msgid "Save"
 msgstr "Zapisz"
 
@@ -65,10 +80,55 @@ msgstr "Zapisz"
 msgid "Back to profile"
 msgstr "Wróć do mojego konta"
 
+#: .\templates\deleteuser.html:6 .\templates\deleteuser.html:7
+msgid "Delete user"
+msgstr "Usuń konto"
+
+#: .\templates\deleteuser.html:15
+msgid "Confirm deleting your account:"
+msgstr "Potwierdź usunięcie swojego konta w serwisie"
+
+#: .\templates\deleteuser.html:17 .\templates\note\deletenote.html:18
+#: .\templates\place\deleteplace.html:19
+#: .\templates\spending\deletespending.html:19
+#: .\templates\spending\spending_template.html:43
+#: .\templates\ticket\deleteticket.html:19
+#: .\templates\ticket\ticket_template.html:22
+#: .\templates\trip\deletetrip.html:19
+msgid "Delete"
+msgstr "Usuń"
+
 #: .\templates\editprofile.html:6 .\templates\editprofile.html:7
-#: .\templates\profile.html:54
+#: .\templates\profile.html:58
 msgid "Edit profile"
 msgstr "Edytuj profil"
+
+#: .\templates\editprofile.html:17
+msgid "Delete profile"
+msgstr "Usuń konto"
+
+#: .\templates\error\400.html:4 .\templates\error\400.html:5
+#: .\templates\error\403.html:4 .\templates\error\403.html:5
+#: .\templates\error\404.html:4 .\templates\error\404.html:5
+#: .\templates\error\500.html:4 .\templates\error\500.html:5
+msgid "Error"
+msgstr "Wystąpił błąd"
+
+#: .\templates\error\400.html:10
+msgid "400 error message"
+msgstr "Nieprawidłowe żądanie."
+
+#: .\templates\error\403.html:10
+msgid "403 error message"
+msgstr "Nie masz dostępu do tej zawartości."
+
+#: .\templates\error\404.html:10
+msgid "404 error message"
+msgstr "Strona nie istnieje."
+
+#: .\templates\error\500.html:10
+msgid "500 error message"
+msgstr "Błąd serwera"
 
 #: .\templates\index.html:7
 msgid "Tripus title"
@@ -103,25 +163,17 @@ msgstr "Usuń notatkę"
 msgid "Confirm deleting this note:"
 msgstr "Potwierdź usunięcie notatki:"
 
-#: .\templates\note\deletenote.html:18 .\templates\place\deleteplace.html:19
-#: .\templates\spending\deletespending.html:19
-#: .\templates\spending\spending_template.html:43
-#: .\templates\trip\deletetrip.html:19
-msgid "Delete"
-msgstr "Usuń"
-
-#: .\templates\note\editnote.html:6 .\templates\trip\singletrip.html:67
+#: .\templates\note\editnote.html:6 .\templates\note\editnote.html:7
+#: .\templates\trip\singletrip.html:91
 msgid "Edit note"
 msgstr "Edytuj notatkę"
-
-#: .\templates\note\editnote.html:7 .\templates\spending\editspending.html:6
-#: .\templates\spending\editspending.html:8
-msgid "Edit spending"
-msgstr "Edytuj wydatek"
 
 #: .\templates\note\editnote.html:16 .\templates\place\viewplace.html:47
 #: .\templates\place\visitlist.html:15
 #: .\templates\spending\viewspending.html:14
+#: .\templates\ticket\addticket.html:16 .\templates\ticket\editticket.html:16
+#: .\templates\ticket\ticketlist.html:12 .\templates\ticket\viewticket.html:40
+#: .\templates\trip\edittrip.html:16
 msgid "Back to trip"
 msgstr "Wróć do podróży"
 
@@ -131,7 +183,7 @@ msgstr "Dodaj miejsce"
 
 #: .\templates\place\addplace.html:15
 #: .\templates\spending\spending_template.html:20
-#: .\templates\trip\singletrip.html:63
+#: .\templates\ticket\addticket.html:15 .\templates\trip\singletrip.html:87
 msgid "Add"
 msgstr "Dodaj"
 
@@ -158,36 +210,40 @@ msgstr "Wróć do miejsca"
 msgid "Places to visit"
 msgstr "Miejsca do odwiedzenia"
 
-#: .\templates\place\viewplace.html:15 .\tripus\forms.py:30
-#: .\tripus\forms.py:102
+#: .\templates\place\viewplace.html:15 .\templates\ticket\viewticket.html:13
+#: .\tripus\forms.py:39 .\tripus\forms.py:132 .\tripus\forms.py:169
 msgid "name"
 msgstr "Nazwa"
 
-#: .\templates\place\viewplace.html:19 .\tripus\forms.py:103
+#: .\templates\place\viewplace.html:19 .\tripus\forms.py:164
+#: .\tripus\forms.py:170
 msgid "category"
 msgstr "Kategoria"
 
-#: .\templates\place\viewplace.html:23 .\tripus\forms.py:104
+#: .\templates\place\viewplace.html:23 .\tripus\forms.py:171
 msgid "visit_date"
 msgstr "Data odwiedzenia"
 
-#: .\templates\place\viewplace.html:27 .\tripus\forms.py:105
+#: .\templates\place\viewplace.html:27 .\tripus\forms.py:172
 msgid "website"
 msgstr "Strona www"
 
-#: .\templates\place\viewplace.html:31 .\tripus\forms.py:106
+#: .\templates\place\viewplace.html:31 .\templates\ticket\viewticket.html:21
+#: .\tripus\forms.py:134 .\tripus\forms.py:173
 msgid "addess"
 msgstr "Adres"
 
-#: .\templates\place\viewplace.html:35 .\tripus\forms.py:107
+#: .\templates\place\viewplace.html:35 .\tripus\forms.py:174
 msgid "approach"
 msgstr "Dojazd"
 
-#: .\templates\place\viewplace.html:39 .\tripus\forms.py:108
+#: .\templates\place\viewplace.html:39 .\templates\ticket\viewticket.html:29
+#: .\tripus\forms.py:136 .\tripus\forms.py:175
 msgid "notes"
 msgstr "Notatki"
 
 #: .\templates\place\visit_template.html:9
+#: .\templates\ticket\ticket_template.html:8
 msgid "Name"
 msgstr "Nazwa"
 
@@ -220,15 +276,15 @@ msgstr "Nie"
 msgid "No visited"
 msgstr "Nie masz jeszcze żadnych miejsc do odwiedzenia"
 
-#: .\templates\place\visitlist.html:14 .\templates\trip\singletrip.html:41
+#: .\templates\place\visitlist.html:14 .\templates\trip\singletrip.html:66
 msgid "Add place"
 msgstr "Dodaj miejsce"
 
-#: .\templates\profile.html:12 .\tripus\forms.py:56
+#: .\templates\profile.html:12 .\tripus\forms.py:72
 msgid "first name"
 msgstr "Imię"
 
-#: .\templates\profile.html:16 .\tripus\forms.py:57
+#: .\templates\profile.html:16 .\tripus\forms.py:73
 msgid "last name"
 msgstr "Nazwisko"
 
@@ -237,32 +293,28 @@ msgid "user name"
 msgstr "Nazwa użytkownika"
 
 #: .\templates\profile.html:24
+msgid "Email"
+msgstr "Email"
+
+#: .\templates\profile.html:28
 msgid "joined date"
 msgstr "Podróżujesz z nami od"
 
-#: .\templates\profile.html:28
+#: .\templates\profile.html:32
 msgid "current trip"
 msgstr "W podróży"
 
-#: .\templates\profile.html:31
+#: .\templates\profile.html:35
 msgid "Currently no trips"
 msgstr "Nigdzie teraz nie podróżujesz"
 
-#: .\templates\profile.html:44
+#: .\templates\profile.html:48
 msgid "number of planned trips"
 msgstr "Zaplanowanych podróży"
 
-#: .\templates\profile.html:48
+#: .\templates\profile.html:52
 msgid "number of past trips"
 msgstr "Odbytych podróży"
-
-#: .\templates\registration\password_reset_confirm.html:12
-msgid "Submit"
-msgstr "Zapisz"
-
-#: .\templates\registration\password_reset_confirm.html:17
-msgid "Password reset failed"
-msgstr ""
 
 #: .\templates\spending\deletespending.html:6
 #: .\templates\spending\deletespending.html:8
@@ -273,6 +325,11 @@ msgstr "Usuń wydatek"
 msgid "Confirm deleting this spending:"
 msgstr "Potwierdź usunięcie wydatku:"
 
+#: .\templates\spending\editspending.html:6
+#: .\templates\spending\editspending.html:8
+msgid "Edit spending"
+msgstr "Edytuj wydatek"
+
 #: .\templates\spending\editspending.html:17
 msgid "Back to spending"
 msgstr "Wróć do wydatków"
@@ -281,7 +338,7 @@ msgstr "Wróć do wydatków"
 msgid "Single spending"
 msgstr "Wydatek"
 
-#: .\templates\spending\spending_template.html:28 .\tripus\forms.py:75
+#: .\templates\spending\spending_template.html:28 .\tripus\forms.py:106
 msgid "price"
 msgstr "Kwota"
 
@@ -290,14 +347,17 @@ msgid "Currency"
 msgstr "Waluta"
 
 #: .\templates\spending\spending_template.html:30
+#: .\templates\ticket\viewticket.html:17 .\tripus\forms.py:133
 msgid "date"
 msgstr "Data"
 
 #: .\templates\spending\spending_template.html:31
+#: .\templates\ticket\ticket_template.html:11
 msgid "Action"
 msgstr "Akcja"
 
 #: .\templates\spending\spending_template.html:42
+#: .\templates\ticket\ticket_template.html:21
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -311,15 +371,66 @@ msgid "No spending"
 msgstr "Brak wydatków"
 
 #: .\templates\spending\viewspending.html:6
-#: .\templates\spending\viewspending.html:8 .\templates\trip\singletrip.html:45
+#: .\templates\spending\viewspending.html:8 .\templates\trip\singletrip.html:69
 msgid "Spending"
 msgstr "Wydatki"
+
+#: .\templates\ticket\addticket.html:6 .\templates\ticket\addticket.html:7
+#: .\templates\ticket\ticketlist.html:11 .\templates\trip\singletrip.html:54
+msgid "Add ticket"
+msgstr "Dodaj bilet"
+
+#: .\templates\ticket\deleteticket.html:6
+#: .\templates\ticket\deleteticket.html:8 .\templates\ticket\editticket.html:17
+#: .\templates\ticket\viewticket.html:39
+msgid "Delete ticket"
+msgstr "Usuń bilet"
+
+#: .\templates\ticket\deleteticket.html:16
+msgid "Confirm deleting this ticket:"
+msgstr "Potwierdź usunięcie biletu:"
+
+#: .\templates\ticket\editticket.html:6 .\templates\ticket\editticket.html:7
+#: .\templates\ticket\viewticket.html:38
+msgid "Edit ticket"
+msgstr "Edytuj bilet"
+
+#: .\templates\ticket\ticket_template.html:9
+msgid "Date"
+msgstr "Data"
+
+#: .\templates\ticket\ticket_template.html:10
+#: .\templates\ticket\viewticket.html:33
+msgid "File"
+msgstr "Plik"
+
+#: .\templates\ticket\ticket_template.html:19
+#: .\templates\ticket\viewticket.html:34
+msgid "View"
+msgstr "Zobacz"
+
+#: .\templates\ticket\ticket_template.html:29
+msgid "No tickets"
+msgstr "Nie masz jeszcze żadnych biletów."
+
+#: .\templates\ticket\ticketlist.html:4 .\templates\ticket\ticketlist.html:5
+msgid "Tickets"
+msgstr "Bilety"
+
+#: .\templates\ticket\viewticket.html:4
+msgid "Ticket"
+msgstr "Bilet"
+
+#: .\templates\ticket\viewticket.html:25 .\tripus\forms.py:135
+msgid "reservation_number"
+msgstr "Numer rezerwacji"
 
 #: .\templates\trip\addtrip.html:6 .\templates\trip\addtrip.html:7
 msgid "New trip"
 msgstr "Dodaj nową podróż"
 
 #: .\templates\trip\deletetrip.html:6 .\templates\trip\deletetrip.html:8
+#: .\templates\trip\singletrip.html:96
 msgid "Delete trip"
 msgstr "Usuń podróż"
 
@@ -328,42 +439,35 @@ msgid "Confirm deleting this trip:"
 msgstr "Potwierdź usunięcie podróży:"
 
 #: .\templates\trip\edittrip.html:6 .\templates\trip\edittrip.html:7
+#: .\templates\trip\singletrip.html:95
 msgid "Edit trip"
 msgstr "Edytuj podróż"
-
-#: .\templates\trip\edittrip.html:15
-msgid "Save trip"
-msgstr "Dodaj nową podróż"
 
 #: .\templates\trip\singletrip.html:12
 msgid "Weather"
 msgstr "Pogoda"
 
-#: .\templates\trip\singletrip.html:15
+#: .\templates\trip\singletrip.html:29
 msgid "Currency rate"
 msgstr "Kurs walut"
 
-#: .\templates\trip\singletrip.html:31
+#: .\templates\trip\singletrip.html:45
 msgid "Tickets reservations"
 msgstr "Bilety i rezerwacje"
 
-#: .\templates\trip\singletrip.html:32
-msgid "Sightseeing list"
-msgstr "Miejsca, które chcę odwiedzić"
-
-#: .\templates\trip\singletrip.html:38
+#: .\templates\trip\singletrip.html:51 .\templates\trip\singletrip.html:63
 msgid "More places to visit"
 msgstr "Zobacz wszystkie miejsca"
 
-#: .\templates\trip\singletrip.html:44
-msgid "To pack list"
-msgstr "Rzeczy do zabrania"
+#: .\templates\trip\singletrip.html:57
+msgid "Sightseeing list"
+msgstr "Miejsca, które chcę odwiedzić"
 
-#: .\templates\trip\singletrip.html:52
+#: .\templates\trip\singletrip.html:76
 msgid "More spending"
 msgstr "Wyświetl wszystkie wydatki"
 
-#: .\templates\trip\singletrip.html:56
+#: .\templates\trip\singletrip.html:80
 msgid "Notes"
 msgstr "Notatki"
 
@@ -379,133 +483,179 @@ msgstr "Zaplanowane podróże"
 msgid "Past trips"
 msgstr "Archiwum podróży"
 
-#: .\templates\trip\trip_list.html:70
+#: .\templates\trip\trip_list.html:72
 msgid "You have no trips"
 msgstr "Nie masz jeszcze żadnych podróży. Może czas coś zaplanować?"
 
-#: .\tripus\forms.py:13
+#: .\tripus\forms.py:15
 msgid "restaurant"
 msgstr "restauracja"
 
-#: .\tripus\forms.py:14
+#: .\tripus\forms.py:16
 msgid "monument"
 msgstr "zabytek"
 
-#: .\tripus\forms.py:15
+#: .\tripus\forms.py:17
 msgid "attraction"
 msgstr "atrakcja"
 
-#: .\tripus\forms.py:16
+#: .\tripus\forms.py:18
 msgid "outside"
 msgstr "na zewnątrz"
 
-#: .\tripus\forms.py:17
+#: .\tripus\forms.py:19
 msgid "shop"
 msgstr "sklep"
 
-#: .\tripus\forms.py:18
+#: .\tripus\forms.py:20
 msgid "other"
 msgstr "inne"
 
-#: .\tripus\forms.py:31
+#: .\tripus\forms.py:24
+msgid "tourism"
+msgstr "turystyka"
+
+#: .\tripus\forms.py:25
+msgid "business"
+msgstr "biznes"
+
+#: .\tripus\forms.py:26
+msgid "sports"
+msgstr "sporty"
+
+#: .\tripus\forms.py:27
+msgid "health"
+msgstr "zdrowie"
+
+#: .\tripus\forms.py:33 .\tripus\forms.py:40
 msgid "country"
 msgstr "Kraj"
 
-#: .\tripus\forms.py:32
-msgid "city"
-msgstr "Miasto"
-
-#: .\tripus\forms.py:33
-msgid "Departure date"
-msgstr "Data wyjazu"
-
-#: .\tripus\forms.py:34
-msgid "Comeback date"
-msgstr "Data powrotu"
-
-#: .\tripus\forms.py:35
+#: .\tripus\forms.py:34 .\tripus\forms.py:44
 msgid "Target"
 msgstr "Cel wyjazdu"
 
-#: .\tripus\forms.py:58
+#: .\tripus\forms.py:41
+msgid "city"
+msgstr "Miasto"
+
+#: .\tripus\forms.py:42
+msgid "Departure date"
+msgstr "Data wyjazu"
+
+#: .\tripus\forms.py:43
+msgid "Comeback date"
+msgstr "Data powrotu"
+
+#: .\tripus\forms.py:74
 msgid "email address"
 msgstr "Adres email"
 
-#: .\tripus\forms.py:68 .\tripus\forms.py:76
-msgid "currency"
-msgstr "Waluta"
-
-#: .\tripus\forms.py:74
-msgid "spending name"
-msgstr "Wydatek"
-
-#: .\tripus\forms.py:77
+#: .\tripus\forms.py:98 .\tripus\forms.py:108
 msgid "spending date"
 msgstr "Data"
 
-#: .\tripus\forms.py:109
+#: .\tripus\forms.py:99 .\tripus\forms.py:107
+msgid "currency"
+msgstr "Waluta"
+
+#: .\tripus\forms.py:105
+msgid "spending name"
+msgstr "Wydatek"
+
+#: .\tripus\forms.py:137
+msgid "file"
+msgstr "Plik"
+
+#: .\tripus\forms.py:152
+msgid "File not supported!"
+msgstr "Możesz dodać tylko plik w formacie .pdf, .jpg lub .png."
+
+#: .\tripus\forms.py:176
 msgid "visited"
 msgstr "Odwiedzone"
 
-#: .\tripus\forms.py:149
+#: .\tripus\forms.py:216
 msgid "text"
 msgstr "Treść"
 
-#: .\tripus\views.py:50
+#: .\tripus\views.py:64
 msgid "Your profile was updated successfully!"
 msgstr "Profil został edytowany!"
 
-#: .\tripus\views.py:92
+#: .\tripus\views.py:80
+msgid "User was deleted successfully!"
+msgstr "Twoje konto zostało usunięte!"
+
+#: .\tripus\views.py:128
 msgid "Your password was updated successfully!"
 msgstr "Hasło zostało zmienione!"
 
-#: .\tripus\views.py:155 .\tripus\views.py:251
+#: .\tripus\views.py:202 .\tripus\views.py:303
 msgid "You added a new spending!"
 msgstr "Wydatek został dodany!"
 
-#: .\tripus\views.py:172
+#: .\tripus\views.py:220
 msgid "You added a note!"
 msgstr "Notatka została dodana!"
 
-#: .\tripus\views.py:194
+#: .\tripus\views.py:243
 msgid "You added a new trip!"
 msgstr "Nowa podróż została dodana!"
 
-#: .\tripus\views.py:208
+#: .\tripus\views.py:258
 msgid "Trip was updated successfully!"
 msgstr "Podróż została edytowana!"
 
-#: .\tripus\views.py:222
+#: .\tripus\views.py:273
 msgid "Trip was deleted successfully!"
 msgstr "Podróż została usunięta!"
 
-#: .\tripus\views.py:289
+#: .\tripus\views.py:350
 msgid "Spending was updated successfully!"
 msgstr "Wydatek został edytowany!"
 
-#: .\tripus\views.py:309
+#: .\tripus\views.py:371
 msgid "Spending was deleted successfully!"
 msgstr "Wydatek został usunięty!"
 
-#: .\tripus\views.py:335
+#: .\tripus\views.py:399
+msgid "You added a new ticket!"
+msgstr "Bilet został dodany!"
+
+#: .\tripus\views.py:414
+msgid "Ticket was updated successfully!"
+msgstr "Bilet został edytowany!"
+
+#: .\tripus\views.py:430
+msgid "Ticket was deleted successfully!"
+msgstr "Bilet został usunięty!"
+
+#: .\tripus\views.py:465
 msgid "You added a new place to visit!"
 msgstr "Nowe miejsce zostało dodane!"
 
-#: .\tripus\views.py:349
+#: .\tripus\views.py:480
 msgid "Place was updated successfully!"
 msgstr "Miejsce zostało edytowane!"
 
-#: .\tripus\views.py:364
+#: .\tripus\views.py:496
 msgid "Place was deleted successfully!"
 msgstr "Miejsce zostało usunięte!"
 
-#: .\tripus\views.py:387
+#: .\tripus\views.py:521
 msgid "Note was updated successfully!"
 msgstr "Notatka została edytowana!"
 
-#: .\tripus\views.py:402
+#: .\tripus\views.py:537
 msgid "Note was deleted successfully!"
 msgstr "Notatka została usunięta!"
+
+#~ msgid "Save trip"
+#~ msgstr "Dodaj nową podróż"
+
+#~ msgid "To pack list"
+#~ msgstr "Rzeczy do zabrania"
 
 #~ msgid "trip name"
 #~ msgstr "Nazwa podróży"

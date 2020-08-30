@@ -5,11 +5,25 @@
 
 {% block title %}{{ my_trip.name }}{% endblock %}
 {% block header %}{{ my_trip.name }}{% endblock %}
-{% block paragraph %}{{ my_trip.departure_date|date:'d/m/Y' }} – {{ my_trip.comeback_date|date:'d/m/Y' }}{% endblock %}
+{% block paragraph %}{{ my_trip.city }}, {{ my_trip.departure_date|date:'d/m/Y' }} – {{ my_trip.comeback_date|date:'d/m/Y' }}{% endblock %}
 
 {% block content %}
     <div class="container col-sm-6" data-aos="fade-up">
         <h1>{% trans "Weather" %}</h1><hr>
+        <div class="container">
+            <div class="row">
+            {% for w in forecast %}
+                <div class="col">
+                <b>{{ w.date|date:'d/m/Y' }}</b><br>
+                <img src="/static/tripus/img/thermometer_hot.png" height="20px">
+                {{ w.max_temp }}{{ '°C' }}<br>
+                <img src="/static/tripus/img/thermometer_cold.png" height="20px">
+                    {{ w.min_temp }}{{ '°C' }}<br>
+                {{ w.weather }}
+                </div>
+            {% endfor %}
+            </div>
+        </div>
         {{ object.country }}
         {% if country_currency != 'PLN' %}
         <h1>{% trans "Currency rate" %}</h1><hr>
@@ -29,6 +43,17 @@
         </div>
         {% endif %}
         <h1>{% trans "Tickets reservations" %}</h1><hr>
+        <section id="contact" class="contact">
+            <div class="container" data-aos="fade-up">
+                {% include "ticket/ticket_template.html" %}
+                {% if places_list|length == 5 %}
+                <div class="text-center">
+                    <a href="{% url 'tripus:ticketList' my_trip.id %}">{% trans "More places to visit" %}</a>
+                </div>
+                {% endif %}
+                <a class="btn btn-success float-left" href="{% url 'tripus:ticketAdd' my_trip.id %}" role="button">{% trans "Add ticket" %}</a>
+            </div>
+        </section>
         <h1>{% trans "Sightseeing list" %}</h1><hr>
         <section id="contact" class="contact">
             <div class="container" data-aos="fade-up">
@@ -41,7 +66,6 @@
                 <a class="btn btn-success float-left" href="{% url 'tripus:visitPlaceAdd' my_trip.id %}" role="button">{% trans "Add place" %}</a>
             </div>
         </section>
-        <h1>{% trans "To pack list" %}</h1><hr>
         <h1>{% trans "Spending" %}</h1><hr>
         <section id="contact" class="contact">
             <div class="container" data-aos="fade-up">
@@ -68,5 +92,7 @@
                 {% endif %}
             </div>
         </section>
+        <a class=" btn btn-success" href="{% url 'tripus:editTrip' my_trip.id %}">{% trans "Edit trip" %}</a>
+        <a class=" btn btn-success" href="{% url 'tripus:deleteTrip' my_trip.id %}">{% trans "Delete trip" %}</a>
     </div>
 {% endblock %}

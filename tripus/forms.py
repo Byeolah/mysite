@@ -2,6 +2,8 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 import datetime
+
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from .models import *
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -18,11 +20,18 @@ category_choices = [
     (_('other'), _('other'))
 ]
 
+target_choices = [
+    (_('tourism'), _('tourism')),
+    (_('business'), _('business')),
+    (_('sports'), _('sports')),
+    (_('health'), _('health'))
+]
+
 
 # Add trip form.
 class AddTripForm(forms.ModelForm):
-    country = CountryField().formfield()
-
+    country = CountryField().formfield(label=_('country'))
+    target = forms.ChoiceField(choices=target_choices, label=_('Target'))
     class Meta:
         model = Trip
         fields = ('name', 'country', 'city', 'departure_date', 'comeback_date', 'target')
@@ -43,6 +52,13 @@ class AddTripForm(forms.ModelForm):
         process = self.cleaned_data
         return process
 
+    def clean(self):
+        cleaned_data = super().clean()
+        departure_date = cleaned_data.get("departure_date")
+        comeback_date = cleaned_data.get("comeback_date")
+        if comeback_date < departure_date:
+            raise forms.ValidationError("Comeback date should be greater than departure date.")
+
 
 # Delete trip form.
 class TripDeleteForm(ModelForm):
@@ -61,10 +77,25 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
 
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        try:
+            user = User.objects.get(email=email)
+            raise forms.ValidationError("This email address already exists. Did you forget your password?")
+        except User.DoesNotExist:
+            return email
+
+
+# Delete user.
+class UserDeleteForm(ModelForm):
+    class Meta:
+        model = User
+        fields = []
+
 
 # Spending form.
 class SpendingForm(forms.ModelForm):
-    date = forms.DateField(initial=datetime.date.today)
+    date = forms.DateField(initial=datetime.date.today, label=_('spending date'))
     currency_code = forms.ChoiceField(label=_('currency'))
 
     class Meta:
@@ -92,9 +123,45 @@ class SpendingDeleteForm(ModelForm):
         fields = []
 
 
+# Ticket form.
+class TicketForm(ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ('name', 'date', 'address', 'reservation_number', 'notes', 'file')
+        labels = {
+            'name': _('name'),
+            'date': _('date'),
+            'address': _('addess'),
+            'reservation_number':_('reservation_number'),
+            'notes': _('notes'),
+            'file': _('file')
+        }
+        widgets = {
+            'date': forms.DateInput(format=('%Y-%m-%d'), attrs={'type': 'date'})
+        }
+
+    def process(self):
+        process = self.cleaned_data
+        return process
+
+    def validate_file_extension(value):
+        import os
+        ext = os.path.splitext(value.name)[1]
+        valid_extensions = ['.pdf', '.jpg', '.png']
+        if not ext in valid_extensions:
+            raise ValidationError(_('File not supported!'))
+
+
+# Delete ticket form.
+class TicketDeleteForm(ModelForm):
+    class Meta:
+        model = Ticket
+        fields = []
+
+
 # Visit places form.
 class VisitForm(forms.ModelForm):
-    category = forms.ChoiceField(choices=category_choices)
+    category = forms.ChoiceField(choices=category_choices, label=_('category'))
     class Meta:
         model = Visit
         fields = ('name', 'category', 'visit_date', 'website', 'address', 'approach', 'notes', 'visited')

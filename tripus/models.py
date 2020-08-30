@@ -7,7 +7,7 @@ from django_countries.fields import CountryField
 class Trip(models.Model):
     name = models.CharField(max_length=100, blank=False)
     country = CountryField(null=True)
-    city = models.CharField(max_length=50, blank=True)
+    city = models.CharField(max_length=50, blank=False)
     departure_date = models.DateField(blank=False)
     comeback_date = models.DateField(blank=False)
     target = models.CharField(max_length=50, blank=False)
@@ -52,3 +52,21 @@ class Note(models.Model):
 
     def __str__(self):
         return self.text
+
+
+# Ticket Class – store tickets and reservations.
+class Ticket(models.Model):
+    name = models.fields.CharField(max_length=400, blank=False)
+    date = models.DateField(null=True, blank=True)
+    address = models.fields.CharField(max_length=500, blank=True)
+    reservation_number = models.fields.CharField(max_length=40, blank=True)
+    notes = models.fields.TextField(blank=True)
+    file = models.FileField(upload_to='tickets/', blank=True)
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    def delete(self, *args, **kwargs):
+        self.file.delete()
+        super().delete(*args, **kwargs)

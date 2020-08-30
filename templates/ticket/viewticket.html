@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Ticket" %}{% endblock %}
+{% block header %}{{ticket.name}}{% endblock %}
+
+{% block content %}
+    <section id="contact" class="contact">
+        <div class="container col-sm-4" data-aos="fade-up">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td>{% trans "name" %}</td>
+                    <td>{{ ticket.name }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "date" %}</td>
+                    <td>{{ ticket.date|date:'d/m/Y' }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "addess" %}</td>
+                    <td>{{ ticket.address }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "reservation_number" %}</td>
+                    <td>{{ ticket.reservation_numbertion }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "notes" %}</td>
+                    <td>{{ ticket.notes }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "File" %}</td>
+                    <td><a class="btn btn-link" href="{{ ticket.file.url }}">{% trans "View" %}</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <a class="btn btn-success" href="{% url 'tripus:ticketEdit' trip_id ticket.id %}" role="button">{% trans "Edit ticket" %}</a>
+            <a class="btn btn-outline-success" href="{% url 'tripus:ticketDelete' trip_id ticket.id %}" role="button">{% trans "Delete ticket" %}</a>
+            <a class="btn btn-link" href="{% url 'tripus:singleTrip' trip_id %}" role="button">{% trans "Back to trip" %}</a>
+        </div>
+    </section>
+{% endblock %}

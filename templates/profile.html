@@ -21,6 +21,10 @@
                 <td>{{ profile.username }}</td>
             </tr>
             <tr>
+                <td>{% trans "Email" %}</td>
+                <td>{{ profile.email }}</td>
+            </tr>
+            <tr>
                 <td>{% trans "joined date" %}</td>
                 <td>{{ profile.date_joined|date:'d/m/Y' }}</td>
             </tr>

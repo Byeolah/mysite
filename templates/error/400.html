@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Error" %}{% endblock %}
+{% block header %}{% trans "Error" %}{% endblock %}
+
+{% block content %}
+    <section id="contact" class="contact">
+        <div class="container col-sm-4 text-center" data-aos="fade-up">
+            <h2>{% trans "400 error message" %}</h2><br>
+            <a class="btn btn-success" href="{% url 'tripus:index' %}" role="button">{% trans "Home" %}</a>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block title %}{% trans "Edit ticket" %}{% endblock %}
+{% block header %}{% trans "Edit ticket" %}{% endblock %}
+
+{% block content %}
+    <section id="contact" class="contact">
+        <div class="container col-sm-4" data-aos="fade-up">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input type="submit" value="{% trans "Save" %}" class="btn btn-success">
+                <a class="btn btn-link" href="{% url 'tripus:singleTrip' trip_id %}" role="button">{% trans "Back to trip" %}</a>
+                <a class="btn btn-link" href="{% url 'tripus:ticketDelete' trip_id ticket.id %}" role="button">{% trans "Delete ticket" %}</a>
+            </form>
+        </div>
+    </section>
+{% endblock %}

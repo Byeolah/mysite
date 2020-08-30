@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Tickets" %}{% endblock %}
+{% block header %}{% trans "Tickets" %}{% endblock %}
+
+{% block content %}
+    <section id="contact" class="contact">
+        <div class="container col-sm-4" data-aos="fade-up">
+           {% include "ticket/ticket_template.html" %}
+            <a class="btn btn-success float-left" href="{% url 'tripus:ticketAdd' trip_id %}" role="button">{% trans "Add ticket" %}</a>
+            <a class="btn btn-link" href="{% url 'tripus:singleTrip' trip_id %}" role="button">{% trans "Back to trip" %}</a>
+        </div>
+    </section>
+{% endblock %}

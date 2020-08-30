@@ -12,7 +12,8 @@
             <form method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <input type="submit" value="{% trans "Save trip" %}" class="btn btn-success">
+                <input type="submit" value="{% trans "Save" %}" class="btn btn-success">
+                <a class="btn btn-link" href="{% url 'tripus:singleTrip' trip_id %}" role="button">{% trans "Back to trip" %}</a>
             </form>
         </div>
     </section>

@@ -15,8 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('tripus/', include('tripus.urls')),
-    path('admin/', admin.site.urls),
-]
+    path('admin/', admin.site.urls)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'tripus.views.error_404'
+handler500 = 'tripus.views.error_500'
+handler403 = 'tripus.views.error_403'
+handler400 = 'tripus.views.error_400'
