@@ -27,7 +27,7 @@ mysql-client==0.0.1
 nbformat==5.0.7
 oweatherm==0.5.2
 pigar==0.10.0
-pip==20.2.2
+pip==21.1
 pyowm==3.0.0
 pyrsistent==0.16.0
 python-dateutil==2.8.1
