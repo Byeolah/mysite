@@ -35,7 +35,7 @@ python-gettext==4.0
 pytz==2020.1
 pywin32==228
 requests==2.24.0
-setuptools==49.6.0
+setuptools==65.5.1
 six==1.15.0
 soupsieve==2.0.1
 sqlparse==0.3.1
